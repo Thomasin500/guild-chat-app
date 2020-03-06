@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Guild Chat App by Thomas Freeman</title>
+        <link rel="stylesheet" type="text/css" href="style.css" />
+    </head>
+    <body>
+        <ul id="messageList"></ul>
+        <form action="/" method="POST" id="messageForm" class="styleTest">
+            <input id="messageInput" autocomplete="off" placeholder="Go ahead, dont be shy..." />
+            <button>Send</button> <!-- TODO MAYBE PUT A LOCAL IMAGE FILE HERE AND PUT AN ARROW OR SOMETHING--->
+        </form>
+
+        <script src="https://code.jquery.com/jquery-1.11.1.js"></script>  <!-- TODO remove this if I actually dont use it-->
+        <script src="/node_modules/socket.io-client/dist/socket.io.js"></script>
+        <script>
+            //const socket = io(); //TODO move this to its own JS file??
+        </script>
+
+    </body>
+</html>
