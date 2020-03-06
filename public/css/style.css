@@ -1,4 +1,36 @@
-.styleTest {
-    color: red;
-    margin-left: 5rem;
+.inputForm {
+    padding: 3px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.messageInput {
+    border: 1px solid;
+    padding: 10px;
+    width: 75%;
+}
+
+.messageButton {
+    width: 15%;
+    background: #03fc94;
+    border: none;
+    padding: 10px;
+    margin-left: 1rem;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+
+.message {
+    background-color: antiquewhite;
+    border: 2px solid;
+    width: 50%;
+    word-wrap: break-word;
+    padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+    margin-bottom: 1rem;
+    display: block;
 }
