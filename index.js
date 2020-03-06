@@ -16,8 +16,12 @@ io.on('connection', function (socket) {
 
     socket.on('send message', function (message) {
         console.log('message: ' + message);
-        debugger
-        io.emit('send message', message);
+
+        const clients = io.sockets.clients().connected;
+        console.log(clients);
+
+        //send the message to everyone BUT the sender
+        socket.broadcast.emit('send message', message); 
     });
 
     socket.on('disconnect', function () {
@@ -29,7 +33,6 @@ http.listen(3000, function () { //todo can probably remove this or at least the 
     console.log('listening on port 3000');
 });
 
-//communcation related
 
 
 

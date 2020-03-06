@@ -5,16 +5,13 @@
         <link rel="stylesheet" type="text/css" href="/css/style.css">
     </head>
     <body>
-        <ul id="messageList"></ul>
+        <ul id="messageList" class="messageList"></ul>
         <form action="/" method="POST" id="messageForm" class="inputForm">
             <input id="messageInput" autocomplete="off" class="messageInput" placeholder="Go ahead, dont be shy..." />
             <!--- TODO make sure to add styling to have the input box on the bottom of the page, and also style the chat messages, have colors to differainte users-->
             <button class="messageButton">Send</button> <!-- TODO MAYBE PUT A LOCAL IMAGE FILE HERE AND PUT AN ARROW OR SOMETHING--->
         </form>
-
         <script src="/socket.io/socket.io.js"></script>
-        <!-- TODO SOCKET DOCS SAY If you would like to use the local version of the client-side JS file, you can find it at node_modules/socket.io-client/dist/socket.io.js.
-        -->
         <script>
             //TODO maybe move this to its own JS file (how to keep io global available???)
             const socket = io();
@@ -26,21 +23,29 @@
                 const input = document.getElementById('messageInput');
 
                 socket.emit('send message', input.value);
+
+                //add the message locally
+                let node = document.createElement('LI');
+                const text = document.createTextNode(input.value + "LOCAL");
+                node.appendChild(text);
+                node.classList = "localMessage";
+
+                messageContainer.appendChild(node);
+
                 input.value = '';
             });
 
             socket.on('send message', function (message) {
 
-                debugger
-
+                //add a message received from elsewhere
                 let node = document.createElement('LI');
                 const text = document.createTextNode(message);
                 node.appendChild(text);
-                node.classList = "message";
+                node.classList = "foreignMessage";
 
-                messageContainer.appendChild(node); //TODO here update messages with user colors, nicknames, etc...
+                messageContainer.appendChild(node); 
             });
-        </script>
 
+        </script>
     </body>
 </html>
