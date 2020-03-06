@@ -1,8 +1,8 @@
+//NodeJS Server Code
 const express = require('express');
 const app = express(); //init nodeJS express framework
 const http = require('http').createServer(app); 
 const io = require('socket.io').listen(http); //init the socket framework and point it to the server
-
 
 //server related
 app.use(express.static('public')); //this allowed the static files in the public folder to be served
@@ -16,6 +16,8 @@ io.on('connection', function (socket) {
 
     socket.on('send message', function (message) {
         console.log('message: ' + message);
+        debugger
+        io.emit('send message', message);
     });
 
     socket.on('disconnect', function () {
@@ -23,7 +25,7 @@ io.on('connection', function (socket) {
     });
 })
 
-http.listen(3000, function () {
+http.listen(3000, function () { //todo can probably remove this or at least the function
     console.log('listening on port 3000');
 });
 

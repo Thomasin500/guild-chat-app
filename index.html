@@ -18,6 +18,7 @@
         <script>
             //TODO maybe move this to its own JS file (how to keep io global available)
             const socket = io();
+            const messageContainer = document.getElementById('messageList');
 
             document.getElementById('messageForm').addEventListener('submit', function (e) {
 
@@ -26,7 +27,18 @@
 
                 socket.emit('send message', input.value);
                 input.value = '';
-            })
+            });
+
+            socket.on('send message', function (message) {
+
+                debugger
+
+                let node = document.createElement('LI');
+                const text = document.createTextNode(message);
+                node.appendChild(text);
+
+                messageContainer.appendChild(node); //TODO here update messages with user colors, nicknames, etc...
+            });
         </script>
 
     </body>
