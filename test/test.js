@@ -1,5 +1,4 @@
-//Note: portions of this code were borrowed from: https://github.com/Swizec/random-coding/blob/master/socket.io-testing/test/echo.js
-
+//Note: portions of this code were inspired from: https://swizec.com/blog/testing-socket-io-apps/swizec/5625
 const chai = require('chai'),
     mocha = require('mocha'),
     should = chai.should();
@@ -20,22 +19,8 @@ describe("echo", function () {
         done();
     });
 
-    //no-op test for boiler plate
-    //TODO might be able to remove this
-   it("echos message", function (done) {
-        const client = io.connect("http://localhost:3000", options);
-
-        client.once("connect", function () {
-            client.once("echo", function (message) {
-                message.should.equal("Hello World");
-
-                client.disconnect();
-                done();
-            });
-
-            client.emit("echo", "Hello World");
-        });
-    }); 
+    //TODO also have tests for front end
+    //maybe cypress??
 
     //TODO write up in a 'lessons learned' about how I had to debug multiple clients
     it("sends message", function (done) {

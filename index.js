@@ -4,40 +4,39 @@ const app = express(); //init nodeJS express framework
 const http = require('http').createServer(app); 
 const io = require('socket.io').listen(http); //init the socket framework and point it to the server
 
-app.use(express.static('public')); //this allowed the static files in the public folder to be served
+//needed to serve up css
+app.use(express.static('public')); 
 
 app.get('/', function (request, response) {
-    response.sendFile(__dirname + '/index.html'); //return the local base html file
+    response.sendFile(__dirname + '/index.html');
 });
 
 //TODO clean up
+//TODO need to have some memory so messages can be seen after reload
 io.on('connection', function (socket) {
-    console.log('user connected');
+
+    io.emit('user connected', io.engine.clientsCount);
 
     socket.on('send message', function (message, callback) {
-        console.log('message: ' + message);
-
-        const clients = io.sockets.clients().connected;
-        //console.log(clients);
 
         //send the message to everyone BUT the sender
         socket.broadcast.emit('send message', message); 
 
+        //callback for testing
         callback = callback || function () { };
         callback(null, "Done.");
     });
 
     socket.on('disconnect', function () {
-        console.log('user disconnected');
+        io.emit('user disconnected', io.engine.clientsCount);
     });
 
-    //for testing purposes 
-    socket.on("echo", function (msg, callback) {
-        callback = callback || function () { };
+    socket.on('show typing', function () {
+        socket.broadcast.emit('show typing');
+    });
 
-        socket.emit("echo", msg);
-
-        callback(null, "Done.");
+    socket.on('hide typing', function () {
+        socket.broadcast.emit('hide typing');
     });
 })
 
