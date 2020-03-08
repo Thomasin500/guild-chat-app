@@ -2,21 +2,21 @@
 <html>
 <head>
     <title>Guild Chat App by Thomas Freeman</title>
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel='stylesheet' type='text/css' href='/css/style.css'>
 </head>
 <body>
-    <ul id="messageList" class="messageList"></ul>
-    <div id="typing" class="typing">Someone is typing...</div>
-    <form action="/" method="POST" id="messageForm" class="inputForm">
-        <input id="messageInput"
-               autocomplete="off"
-               class="messageInput"
-               placeholder="Go ahead, dont be shy..."
-               onkeydown="resetTimer()" />
-        <button id="messageButton" class="messageButton">Send</button>
+    <ul id='messageList' class='messageList'></ul>
+    <div id='typing' class='typing'>Someone is typing...</div>
+    <form action='/' method='POST' id='messageForm' class='inputForm'>
+        <input id='messageInput'
+               autocomplete='off'
+               class='messageInput'
+               placeholder='Go ahead, dont be shy...'
+               onkeydown='resetTimer()' />
+        <button id='messageButton' class='messageButton'>Send</button>
     </form>
 
-    <script src="/socket.io/socket.io.js"></script>
+    <script src='/socket.io/socket.io.js'></script>
     <script>
         //TODO maybe move this to its own JS file (how to keep io global available???)
         const socket = io();
@@ -40,7 +40,7 @@
             let node = document.createElement('LI');
             const text = document.createTextNode(input.value);
             node.appendChild(text);
-            node.classList = "localMessage";
+            node.classList = 'localMessage';
 
             messageContainer.appendChild(node);
             input.value = '';
@@ -51,7 +51,7 @@
             let node = document.createElement('LI');
             const text = document.createTextNode(message);
             node.appendChild(text);
-            node.classList = "foreignMessage";
+            node.classList = 'foreignMessage';
 
             messageContainer.appendChild(node);
         });
@@ -62,7 +62,7 @@
             let node = document.createElement('LI');
             const text = document.createTextNode(`A new user has been connected. There are now: ${numUsers} people in the room.`);
             node.appendChild(text);
-            node.classList = "userChange";
+            node.classList = 'userChange';
 
             messageContainer.appendChild(node);
         });
@@ -72,7 +72,7 @@
             let node = document.createElement('LI');
             const text = document.createTextNode(`A user has left the chat. There are now ${numUsers} people in the room.`);
             node.appendChild(text);
-            node.classList = "userChange";
+            node.classList = 'userChange';
 
             messageContainer.appendChild(node);
         });
@@ -89,14 +89,14 @@
     </script>
 
     <!--- START TEST FILES -->
-    <div id="mocha"></div>
-    <script src="http://chaijs.com/chai.js"></script>
-    <script src="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.js"></script>
-    <script data-build-exclude="true">
+    <div id='mocha'></div>
+    <script src='http://chaijs.com/chai.js'></script>
+    <script src='https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.js'></script>
+    <script data-build-exclude='true'>
         mocha.setup('bdd');
         expect = chai.expect;
     </script>
-    <script src="test/index.html.spec.js"></script>
+    <script src='test/index.html.spec.js'></script>
     <!--- END TEST FILES -->
 </body>
 </html>

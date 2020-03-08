@@ -45,23 +45,24 @@ describe('connecting', function () {
         }); 
     });
 
-    //TODO finish this
-    /*it('disconnects a client and shows a disconnect message', function (done) {
+    it('disconnects a client and shows a disconnect message', function (done) {
 
         const clienta = io.connect('http://localhost:3000', options);
         const clientb = io.connect('http://localhost:3000', options);
 
-        clientb.once('connect', function () {
-            clienta.disconnect();
-            console.log(123)
-            console.log(messageList.children[2].innerText)
-            expect(true).to.equal(messageList.children[2].innerText.includes('A user has left the chat.'));
-            clientb.disconnect();
-            done();
-        });  
-    });*/
-});
+        clienta.once('connect', function () {
+            clienta.once('user disconnected', function (num) {
+                expect(true).to.equal(messageList.lastChild.innerText.includes('A user has left the chat.'));
+                clienta.disconnect();
+                done();
+            });
+        });
 
+        clientb.once('connect', function () {
+            clientb.disconnect();
+        });
+    });
+});
 
 describe('messaging', function () {
 
@@ -77,7 +78,7 @@ describe('messaging', function () {
             button.click();
         });
 
-        clienta.once("send message", function () {
+        clienta.once('send message', function () {
             expect(messageList.firstChild.innerText).to.equal(message);
             expect(messageList.firstChild.classList.contains('localMessage')).to.equal(true);
             clienta.disconnect();
@@ -89,7 +90,7 @@ describe('messaging', function () {
         const clienta = io.connect('http://localhost:3000', options);
         const clientb = io.connect('http://localhost:3000', options);
 
-        clienta.once("send message", function () {
+        clienta.once('send message', function () {
             expect(messageList.firstChild.innerText).to.equal(message);
             expect(messageList.firstChild.classList.contains('foreignMessage')).to.equal(true);
             clienta.disconnect();
@@ -99,20 +100,20 @@ describe('messaging', function () {
 
         clientb.once('connect', function () {
             clearMessages();
-            clientb.emit("send message", message);
+            clientb.emit('send message', message);
         });  
     });
 });
 
 describe('typing', function () {
 
-    it("shows typing", function (done) {
+    it('shows typing', function (done) {
 
-        const clienta = io.connect("http://localhost:3000", options);
-        const clientb = io.connect("http://localhost:3000", options);
+        const clienta = io.connect('http://localhost:3000', options);
+        const clientb = io.connect('http://localhost:3000', options);
 
-        clienta.once("connect", function () {
-            clienta.once("show typing", function () {
+        clienta.once('connect', function () {
+            clienta.once('show typing', function () {
                 expect(typing.style.display).to.equal('block');
                 clienta.disconnect();
                 clientb.disconnect();
@@ -120,18 +121,18 @@ describe('typing', function () {
             });
         });
 
-        clientb.once("connect", function () {
-            clientb.emit("show typing");
+        clientb.once('connect', function () {
+            clientb.emit('show typing');
         });
     });
 
-    it("hides typing", function (done) {
+    it('hides typing', function (done) {
 
-        const clienta = io.connect("http://localhost:3000", options);
-        const clientb = io.connect("http://localhost:3000", options);
+        const clienta = io.connect('http://localhost:3000', options);
+        const clientb = io.connect('http://localhost:3000', options);
 
-        clienta.once("connect", function () {
-            clienta.once("hide typing", function () {
+        clienta.once('connect', function () {
+            clienta.once('hide typing', function () {
                 expect(typing.style.display).to.equal('none');
                 clienta.disconnect();
                 clientb.disconnect();
@@ -139,8 +140,8 @@ describe('typing', function () {
             });
         });
 
-        clientb.once("connect", function () {
-            clientb.emit("hide typing");
+        clientb.once('connect', function () {
+            clientb.emit('hide typing');
         });
     });
 });
