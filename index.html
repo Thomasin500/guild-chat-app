@@ -1,95 +1,104 @@
 <!doctype html>
 <html>
-    <head>
-        <title>Guild Chat App by Thomas Freeman</title>
-        <link rel="stylesheet" type="text/css" href="/css/style.css">
-    </head>
-    <body>
-        <ul id="messageList" class="messageList"></ul>
-        <div id="typing" class="typing">Someone is typing...</div>
-        <form action="/" method="POST" id="messageForm" class="inputForm">
-            <input 
-                id="messageInput" 
-                autocomplete="off" 
-                class="messageInput" 
-                placeholder="Go ahead, dont be shy..." 
-                onkeydown="resetTimer()"
-            />
-            <button class="messageButton">Send</button> <!-- TODO MAYBE PUT A LOCAL IMAGE FILE HERE AND PUT AN ARROW OR SOMETHING--->
-        </form>
-        <script src="/socket.io/socket.io.js"></script>
-        <script>
-            //TODO maybe move this to its own JS file (how to keep io global available???)
-            const socket = io();
-            const messageContainer = document.getElementById('messageList');
-            let timer;
+<head>
+    <title>Guild Chat App by Thomas Freeman</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+    <ul id="messageList" class="messageList"></ul>
+    <div id="typing" class="typing">Someone is typing...</div>
+    <form action="/" method="POST" id="messageForm" class="inputForm">
+        <input id="messageInput"
+               autocomplete="off"
+               class="messageInput"
+               placeholder="Go ahead, dont be shy..."
+               onkeydown="resetTimer()" />
+        <button class="messageButton">Send</button>
+    </form>
 
-            const resetTimer = () => {
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        //TODO maybe move this to its own JS file (how to keep io global available???)
+        const socket = io();
+        const messageContainer = document.getElementById('messageList');
+        let timer;
 
-                console.log(123)
-                timer = setTimeout(() => { socket.emit('hide typing')}, 1500);
-                clearTimeout(timer);
-                socket.emit('show typing');
-                timer = setTimeout(() => { socket.emit('hide typing')}, 1500);
-            }
+        const resetTimer = () => {
+            timer = setTimeout(() => { socket.emit('hide typing') }, 1500);
+            clearTimeout(timer);
+            socket.emit('show typing');
+            timer = setTimeout(() => { socket.emit('hide typing') }, 1500);
+        }
 
-            document.getElementById('messageForm').addEventListener('submit', function (e) {
+        document.getElementById('messageForm').addEventListener('submit', function (e) {
 
-                e.preventDefault();
-                const input = document.getElementById('messageInput');
+            e.preventDefault();
+            const input = document.getElementById('messageInput');
 
-                socket.emit('send message', input.value);
+            socket.emit('send message', input.value);
 
-                let node = document.createElement('LI');
-                const text = document.createTextNode(input.value);
-                node.appendChild(text);
-                node.classList = "localMessage";
+            let node = document.createElement('LI');
+            const text = document.createTextNode(input.value);
+            node.appendChild(text);
+            node.classList = "localMessage";
 
-                messageContainer.appendChild(node);
-                input.value = '';
-            });
-           
-            socket.on('send message', function (message) {
+            messageContainer.appendChild(node);
+            input.value = '';
+        });
 
-                let node = document.createElement('LI');
-                const text = document.createTextNode(message);
-                node.appendChild(text);
-                node.classList = "foreignMessage";
+        socket.on('send message', function (message) {
 
-                messageContainer.appendChild(node); 
-            });
+            let node = document.createElement('LI');
+            const text = document.createTextNode(message);
+            node.appendChild(text);
+            node.classList = "foreignMessage";
 
-            //TODO look how to reduce repeated code, DRY
-            socket.on('user connected', function (numUsers) {
-            
-                let node = document.createElement('LI');
-                const text = document.createTextNode(`A new user has been connected. There are now: ${numUsers} people in the room.`);
-                node.appendChild(text);
-                node.classList = "newUser";  
+            messageContainer.appendChild(node);
+        });
 
-                messageContainer.appendChild(node); 
-            });  
+        //TODO look how to reduce repeated code, DRY
+        socket.on('user connected', function (numUsers) {
 
-            //todo tests for all this
-            socket.on('user disconnected', function (numUsers) {
-            
-                let node = document.createElement('LI');
-                const text = document.createTextNode(`A user has left the chat. There are now ${numUsers} people in the room.`);
-                node.appendChild(text);
-                node.classList = "newUser";  
+            let node = document.createElement('LI');
+            const text = document.createTextNode(`A new user has been connected. There are now: ${numUsers} people in the room.`);
+            node.appendChild(text);
+            node.classList = "newUser";
 
-                messageContainer.appendChild(node); 
-            });  
+            messageContainer.appendChild(node);
+        });
 
-            socket.on('show typing', function () {
-                const typingNode = document.getElementById('typing');
-                typingNode.style.display = 'block';
-            });
+        //todo tests for all this
+        socket.on('user disconnected', function (numUsers) {
 
-            socket.on('hide typing', function () {
-                const typingNode = document.getElementById('typing');
-                typingNode.style.display = 'none';
-            });
-        </script>
-    </body>
+            let node = document.createElement('LI');
+            const text = document.createTextNode(`A user has left the chat. There are now ${numUsers} people in the room.`);
+            node.appendChild(text);
+            node.classList = "newUser";
+
+            messageContainer.appendChild(node);
+        });
+
+        socket.on('show typing', function () {
+            const typingNode = document.getElementById('typing');
+            typingNode.style.display = 'block';
+        });
+
+        socket.on('hide typing', function () {
+            const typingNode = document.getElementById('typing');
+            typingNode.style.display = 'none';
+        });
+    </script>
+
+
+    <!--- START TEST FILES -->
+    <div id="mocha"></div>
+    <script src="http://chaijs.com/chai.js"></script>
+    <script src="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.js"></script>
+    <script data-build-exclude="true">
+        mocha.setup('bdd');
+        expect = chai.expect;
+    </script>
+    <script src="test/index.html.spec.js" data-build-exclude="true"></script>
+    <!--- END TEST FILES -->
+</body>
 </html>
