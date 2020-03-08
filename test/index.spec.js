@@ -47,7 +47,7 @@ describe('connecting', function () {
 
 describe('messaging', function () {
      
-    it('sends and recieves a message', function (done) {
+    it('sends and receives a message', function (done) {
 
         const clienta = io.connect('http://localhost:3000', options);
         const clientb = io.connect('http://localhost:3000', options);

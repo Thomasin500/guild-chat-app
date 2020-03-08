@@ -6,7 +6,7 @@
   "author": "Thomas Freeman",
   "license": "ISC",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha --exit"
   },
   "dependencies": {
     "chai": "^4.2.0",
