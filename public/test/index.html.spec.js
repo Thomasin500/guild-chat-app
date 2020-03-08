@@ -1,93 +1,146 @@
+//NOTE: since we are running these front end tests in the browser, at least one client will already be connected
 
+const options = {
+    transports: ['websocket'],
+    'force new connection': true
+};
 
-describe('After this', function () {
-    it('should be logged in', function (done) {
-        const a = document.getElementById('messageList');
-        console.log(a)
-        done();
-    });
+let messageList;
+let button;
+let inputField;
+let typing;
+
+before(function (done) {
+    messageList = document.getElementById('messageList');
+    button = document.getElementById('messageButton');
+    inputField = document.getElementById('messageInput');
+    typing = document.getElementById('typing');
+    done();
 });
 
-//TODO in this file, test the emit/recieve portions
-//in the html spec test the results on the page
+beforeEach(function (done) {
+    //clear any existing messages
+    clearMessages();
+    done();
+});
 
-/*
-describe("connecting", function () {
+const clearMessages = () => {
+    if (messageList) {
+        while (messageList.firstChild) {
+            messageList.removeChild(messageList.firstChild);
+        }
+    }
+}
 
-    //TODO write up in a 'lessons learned' about how I had to debug multiple clients
-    it("connects a client", function (done) {
+describe('connecting', function () {
 
-        console.log('test');
+    it('connects a client and displays a connection message', function (done) {
 
-        const client = io.connect("http://localhost:3000", options);
+        const client = io.connect('http://localhost:3000', options);
 
-        client.once("connect", function () {
-
-
-            //const a = document.getElementById('messageList');
-            //console.log(a)
-
+        client.once('connect', function () {
+            expect(messageList.firstChild.innerText.includes('A new user has been connected.')).equal(true)
+            client.disconnect();
             done();
+        }); 
+    });
 
+    //TODO finish this
+    /*it('disconnects a client and shows a disconnect message', function (done) {
+
+        const clienta = io.connect('http://localhost:3000', options);
+        const clientb = io.connect('http://localhost:3000', options);
+
+        clientb.once('connect', function () {
+            clienta.disconnect();
+            console.log(123)
+            console.log(messageList.children[2].innerText)
+            expect(true).to.equal(messageList.children[2].innerText.includes('A user has left the chat.'));
+            clientb.disconnect();
+            done();
+        });  
+    });*/
+});
+
+
+describe('messaging', function () {
+
+    const message = 'Testing...';
+
+    it('sends a local message and displays on the page', function (done) {
+
+        const clienta = io.connect('http://localhost:3000', options);
+
+        clienta.once('connect', function () {
+            clearMessages();
+            inputField.value = message;
+            button.click();
         });
 
-
-
+        clienta.once("send message", function () {
+            expect(messageList.firstChild.innerText).to.equal(message);
+            expect(messageList.firstChild.classList.contains('localMessage')).to.equal(true);
+            clienta.disconnect();
+            done();
+        });
     });
 
-    it("disconnects a client", function (done) {
+    it('recieves a foreign message and displays it on the page', function (done) {
+        const clienta = io.connect('http://localhost:3000', options);
+        const clientb = io.connect('http://localhost:3000', options);
 
+        clienta.once("send message", function () {
+            expect(messageList.firstChild.innerText).to.equal(message);
+            expect(messageList.firstChild.classList.contains('foreignMessage')).to.equal(true);
+            clienta.disconnect();
+            clientb.disconnect();
+            done();
+        });
 
+        clientb.once('connect', function () {
+            clearMessages();
+            clientb.emit("send message", message);
+        });  
     });
-
-    //TODO actually test that the message shows up on screen
-
 });
 
-describe("messaging", function () {
+describe('typing', function () {
 
-    //TODO write up in a 'lessons learned' about how I had to debug multiple clients
-    it("sends message", function (done) {
+    it("shows typing", function (done) {
 
         const clienta = io.connect("http://localhost:3000", options);
         const clientb = io.connect("http://localhost:3000", options);
 
         clienta.once("connect", function () {
-            clienta.once("send message", function (message) {
-                message.should.equal("testing...");
+            clienta.once("show typing", function () {
+                expect(typing.style.display).to.equal('block');
                 clienta.disconnect();
+                clientb.disconnect();
                 done();
             });
         });
 
         clientb.once("connect", function () {
-            clientb.emit("send message", "testing...");
-            clientb.disconnect();
+            clientb.emit("show typing");
         });
     });
 
-    //TODO actually test that the message shows up on screen
-    //local for the sender
-    //foregin for the reciever
-});
+    it("hides typing", function (done) {
 
+        const clienta = io.connect("http://localhost:3000", options);
+        const clientb = io.connect("http://localhost:3000", options);
 
+        clienta.once("connect", function () {
+            clienta.once("hide typing", function () {
+                expect(typing.style.display).to.equal('none');
+                clienta.disconnect();
+                clientb.disconnect();
+                done();
+            });
+        });
 
-describe("typing", function () {
-
-    //TODO write up in a 'lessons learned' about how I had to debug multiple clients
-    it("shows a typing message", function (done) {
-
-
+        clientb.once("connect", function () {
+            clientb.emit("hide typing");
+        });
     });
-
-    it("stops showing a typing message", function (done) {
-
-
-    });
-
-    //TODO actually test that the message shows up on screen
-
 });
-
-*/

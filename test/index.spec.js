@@ -16,8 +16,6 @@ beforeEach(function (done) {
     done();
 });
 
-//TODO in this file, test the emit/recieve portions
-//in the html spec test the results on the page
 describe("connecting", function () {
 
     it("connects and disconnects a client", function (done) {
@@ -49,7 +47,6 @@ describe("connecting", function () {
         }); 
     });
 });
-
 
 describe("messaging", function () {
      

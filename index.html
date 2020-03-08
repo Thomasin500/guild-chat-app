@@ -13,7 +13,7 @@
                class="messageInput"
                placeholder="Go ahead, dont be shy..."
                onkeydown="resetTimer()" />
-        <button class="messageButton">Send</button>
+        <button id="messageButton" class="messageButton">Send</button>
     </form>
 
     <script src="/socket.io/socket.io.js"></script>
@@ -62,18 +62,17 @@
             let node = document.createElement('LI');
             const text = document.createTextNode(`A new user has been connected. There are now: ${numUsers} people in the room.`);
             node.appendChild(text);
-            node.classList = "newUser";
+            node.classList = "userChange";
 
             messageContainer.appendChild(node);
         });
 
-        //todo tests for all this
         socket.on('user disconnected', function (numUsers) {
 
             let node = document.createElement('LI');
             const text = document.createTextNode(`A user has left the chat. There are now ${numUsers} people in the room.`);
             node.appendChild(text);
-            node.classList = "newUser";
+            node.classList = "userChange";
 
             messageContainer.appendChild(node);
         });
@@ -89,7 +88,6 @@
         });
     </script>
 
-
     <!--- START TEST FILES -->
     <div id="mocha"></div>
     <script src="http://chaijs.com/chai.js"></script>
@@ -98,7 +96,44 @@
         mocha.setup('bdd');
         expect = chai.expect;
     </script>
-    <script src="test/index.html.spec.js" data-build-exclude="true"></script>
+    <script src="test/index.html.spec.js"></script>
     <!--- END TEST FILES -->
 </body>
 </html>
+
+
+
+
+
+
+
+<!--
+it('disconnects a client and shows a disconnect message', function (done) {
+        const clienta = io.connect('http://localhost:3000', options);
+        const clientb = io.connect('http://localhost:3000', options);
+        clientb.once('connect', function () {
+
+            clienta.disconnect();
+            console.log(123)
+            //TODO when testing the user disconnect message has the same num of users
+
+            console.log(messageList)
+            console.log(messageList.children)
+            console.log(messageList.children.length)
+
+            console.log(messageList.children[0])
+            console.log(messageList.children[1])
+
+            console.log(messageList.children[2])
+
+            //console.log(messageList.children[2].innerText)
+
+
+
+           // expect(true).to.equal(messageList.children[2].innerText.includes('A user has left the chat.'));
+            clientb.disconnect();
+            done();
+        });
+    });
+
+    --> 
