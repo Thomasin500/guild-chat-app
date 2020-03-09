@@ -11,14 +11,11 @@ app.get('/', function (request, response) {
     response.sendFile(__dirname + '/index.html');
 });
 
-//TODO clean up
-//TODO errors on page, check console
-//TODO need to have some memory so messages can be seen after reload
 io.on('connection', function (socket) {
 
     io.emit('user connected', io.engine.clientsCount);
 
-    socket.on('send message', function (message, callback) {
+    socket.on('send message', function (message) {
         //send the message to everyone BUT the sender
         socket.broadcast.emit('send message', message); 
     });
@@ -37,5 +34,5 @@ io.on('connection', function (socket) {
 })
 
 http.listen(3000, function () {
-    console.log('Server started. listening on port 3000');
+    console.log('Server started. Listening on port 3000');
 });

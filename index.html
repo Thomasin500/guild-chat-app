@@ -18,7 +18,6 @@
 
     <script src='/socket.io/socket.io.js'></script>
     <script>
-        //TODO maybe move this to its own JS file (how to keep io global available???)
         const socket = io();
         const messageContainer = document.getElementById('messageList');
         let timer;
@@ -56,7 +55,6 @@
             messageContainer.appendChild(node);
         });
 
-        //TODO look how to reduce repeated code, DRY
         socket.on('user connected', function (numUsers) {
 
             let node = document.createElement('LI');
@@ -100,40 +98,3 @@
     <!--- END TEST FILES -->
 </body>
 </html>
-
-
-
-
-
-
-
-<!--
-it('disconnects a client and shows a disconnect message', function (done) {
-        const clienta = io.connect('http://localhost:3000', options);
-        const clientb = io.connect('http://localhost:3000', options);
-        clientb.once('connect', function () {
-
-            clienta.disconnect();
-            console.log(123)
-            //TODO when testing the user disconnect message has the same num of users
-
-            console.log(messageList)
-            console.log(messageList.children)
-            console.log(messageList.children.length)
-
-            console.log(messageList.children[0])
-            console.log(messageList.children[1])
-
-            console.log(messageList.children[2])
-
-            //console.log(messageList.children[2].innerText)
-
-
-
-           // expect(true).to.equal(messageList.children[2].innerText.includes('A user has left the chat.'));
-            clientb.disconnect();
-            done();
-        });
-    });
-
-    --> 
