@@ -4,6 +4,8 @@
 
 This is a simple messenger style application. Users are automatically able to send and receive messages once connected to the server.
 
+Video overview of the project can be found here: https://www.youtube.com/watch?v=Tpx3d5wbZ4o
+
 Features:
 - Ability to send and receive messages to everyone on the server nearly instantaneously.
 - Notifications when users connect or disconnected from the chat as well as the current total number of connected users.
