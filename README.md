@@ -18,6 +18,7 @@ Features:
 2) Navigate to that folder
 3) `Npm Install`
 4) Start the server `nodemon server.js`
+5) Visit http://localhost:3000/
 
 ### Testing
 To run backend tests: 
