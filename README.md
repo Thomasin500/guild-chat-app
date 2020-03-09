@@ -5,11 +5,11 @@
 This is a simple messenger style application. Users are automatically able to send and recieve messages once connected to the server.
 
 Features:
--Ability to send and recieve messages to everyone on the server nearly instancaiously.
--Notifications when users connect or disconnected from the chat as well as the current total number of connected users.
--Typing indicators. Other users are notified when you are typing.
--Local vs foreign messages. Allows for intitiative understanding of which messages you have sent versus which you have receieved from others.
--Mostly Responsive design. Multiple desktop and mobile deminsions should still be able to use the software.
+- Ability to send and recieve messages to everyone on the server nearly instancaiously.
+- Notifications when users connect or disconnected from the chat as well as the current total number of connected users.
+- Typing indicators. Other users are notified when you are typing.
+- Local vs foreign messages. Allows for intitiative understanding of which messages you have sent versus which you have receieved from others.
+- Mostly Responsive design. Multiple desktop and mobile deminsions should still be able to use the software.
 
 ## Instructions for Use
 
@@ -48,12 +48,12 @@ of existing technologies that are out there in wild. From my research, 3 differe
 		- Quite a few open issues on github
 		- Probably a bit 'more' than I actually needed for this project
 
--Pusher
-	-Pros:
-		-Very configuarable
-		-Updated recently
-	-Cons:
-		-Seemed like a bit more of a learning curve
+- Pusher
+	- Pros:
+		- Very configuarable
+		- Updated recently
+	- Cons:
+		- Seemed like a bit more of a learning curve
 
 - Faye
 	- Pros:
@@ -88,7 +88,7 @@ Given more time I would have implemented some sort of lasting data storage wheth
 That being said, a persistent conversatino would be preferable. 
 
 Secondly, while the backend tests are automated to a degree (i.e. ran using an npm script) it would have been ideal if the front end tests were run in a headless browser or something equivilant. Currently the user has to 
-load the application and run 'mocha.run()' in the console. While certainly ok for this small project, automated tests are ideal.
+load the application and run `mocha.run()` in the console. While certainly ok for this small project, automated tests are ideal.
 
 Finally, here are some ideas I had for potential features:
 - User regisration and tagging messages as sent by a specific user
